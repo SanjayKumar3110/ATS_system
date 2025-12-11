@@ -45,7 +45,11 @@ export default function AtsPage() {
                 <h3 className="text-gray-800 text-2xl font-bold mb-6 border-b pb-2 border-gray-100">
                   Final Score Overview
                 </h3>
-
+                <button onClick={() => setResult(null)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 transition"
+                >
+                  ← Analyze New Resume
+                </button>
                 <div className="flex flex-col items-center">
                   <PieChart width={500} height={300}>
                     <Pie
@@ -131,11 +135,7 @@ export default function AtsPage() {
             <div className="space-y-6">
               {/* JD Box */}
 
-              <button onClick={() => setResult(null)}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 transition"
-              >
-                ← Analyze New Resume
-              </button>
+
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 max-h-[400px] overflow-y-auto custom-scrollbar">
                 <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                   📄 Extracted Job Description
