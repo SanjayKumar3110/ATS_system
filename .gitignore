@@ -1,0 +1,177 @@
+# ============================================
+# UNIFIED .GITIGNORE FOR FULL-STACK PROJECT
+# Backend (Python/FastAPI) + Frontend (React)
+# ============================================
+
+# ────────────────────────────────────────────
+# PYTHON / BACKEND
+# ────────────────────────────────────────────
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.venv/
+venv/
+env/
+ENV/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
+*.spec
+
+# PyInstaller
+*.manifest
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# MyPy / Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Coverage reports
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Database files
+*.sqlite3
+*.db
+
+# ML / AI model files
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.ckpt
+
+# Local data directories
+vectorstore/
+vectorstores/
+test_data/
+backend/app/data/
+backend/app/RAG_system/vectorstore/
+backend/app/RAG_system/knowledge_base/index/
+
+# Data files
+*.jsonl
+*.csv
+*.tsv
+
+# Pydantic cache
+*.schema.json
+
+# FastAPI static/docs builds
+static/
+docs/_build/
+
+# ────────────────────────────────────────────
+# NODE / FRONTEND (React)
+# ────────────────────────────────────────────
+
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Production build
+/build
+frontend/build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Package manager lock files (optional - uncomment if you want to ignore)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ────────────────────────────────────────────
+# IDEs AND EDITORS
+# ────────────────────────────────────────────
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA / PyCharm / WebStorm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# ────────────────────────────────────────────
+# OPERATING SYSTEM FILES
+# ────────────────────────────────────────────
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ────────────────────────────────────────────
+# TEMPORARY FILES
+# ────────────────────────────────────────────
+
+*.tmp
+*.temp
+*.bak
+*.log
+
+# ────────────────────────────────────────────
+# SYSTEM-LEVEL BINARIES
+# ────────────────────────────────────────────
+
+*.exe
+*.dll
+*.bin
+*.obj
+*.o
+*.a
+*.lib
+*.so
+*.dylib
