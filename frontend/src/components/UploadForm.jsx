@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "../api";
 
-const UploadForm = ({ setResult }) => {
+const UploadForm = ({ setResult, setLoading }) => {
   const [file, setFile] = useState(null);
   const [jobData, setJobData] = useState("");
 
@@ -16,12 +16,15 @@ const UploadForm = ({ setResult }) => {
       formData.append("pasted_text", jobData);
     }
 
+    if (setLoading) setLoading(true);
     try {
       const res = await axios.post("/ats/analyze", formData);
       setResult(res.data);
     } catch (err) {
       console.error("❌ ERROR:", err);
       alert("Upload failed: " + err.message);
+    } finally {
+      if (setLoading) setLoading(false);
     }
   };
 

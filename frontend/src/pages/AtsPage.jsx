@@ -7,6 +7,7 @@ const COLORS = ["#00C49F", "#FF8042", "#FFBB28", "#8884d8"];
 
 export default function AtsPage() {
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const totalScore = result?.resume_analysis?.total_score ?? 0;
   const suggestUpgrader = totalScore < 60;
@@ -17,13 +18,20 @@ export default function AtsPage() {
         AI Resume Matcher (ATS)
       </h1>
 
-      {!result ? (
+      {loading ? (
+        <div className="flex flex-col items-center justify-center min-h-[50vh]">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-6"></div>
+          <p className="text-xl font-semibold text-gray-700 animate-pulse">
+            Analyzing Resume & Job Description...
+          </p>
+        </div>
+      ) : !result ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
           <div className="w-full max-w-2xl">
             <p className="text-center text-gray-600 mb-8 text-lg">
               Upload your resume and a job description to get an instant match score and improvement tips.
             </p>
-            <UploadForm setResult={setResult} />
+            <UploadForm setResult={setResult} setLoading={setLoading} />
           </div>
         </div>
       ) : (
@@ -39,7 +47,7 @@ export default function AtsPage() {
                 </h3>
 
                 <div className="flex flex-col items-center">
-                  <PieChart width={400} height={300}>
+                  <PieChart width={500} height={300}>
                     <Pie
                       dataKey="value"
                       data={[
@@ -122,10 +130,17 @@ export default function AtsPage() {
             {/* RIGHT COLUMN: JD & Skills */}
             <div className="space-y-6">
               {/* JD Box */}
+
+              <button onClick={() => setResult(null)}
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 transition"
+              >
+                ← Analyze New Resume
+              </button>
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 max-h-[400px] overflow-y-auto custom-scrollbar">
                 <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                   📄 Extracted Job Description
                 </h2>
+
                 <p className="text-sm leading-relaxed whitespace-pre-line text-gray-600">
                   {result.job_description.cleaned_jd}
                 </p>
