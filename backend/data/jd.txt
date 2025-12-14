@@ -1,0 +1,10 @@
+We are hiring a full-stack developer with 2+ years of experience.
+
+Required Skills:
+- Strong knowledge of Python and Django
+- Experience with JavaScript frameworks, especially React.js
+- Familiarity with RESTful APIs and Git
+- Bonus: Docker, AWS, PostgreSQL
+
+Job Role:
+You will be responsible for building end-to-end web applications and collaborating with a cross-functional team.
