@@ -3,8 +3,7 @@
 import re
 from app.services.nlp_matcher import NLPMatcher
 
-DATASET_FILENAME = "clean_job_data.csv"
-matcher = NLPMatcher(DATASET_FILENAME)
+matcher = NLPMatcher("")
 
 def clean_and_extract_jd(text: str):
     # Remove LinkedIn/Indeed noise

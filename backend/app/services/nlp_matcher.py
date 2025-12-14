@@ -12,7 +12,9 @@ nlp = spacy.load("en_core_web_sm")
 
 def load_skill_sets_from_csv(csv_path: str):
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(base_dir, '..', 'data', 'csv', 'job_data.csv')
+    # Go up two levels: services -> app -> backend
+    backend_dir = os.path.dirname(os.path.dirname(base_dir))
+    csv_path = os.path.join(backend_dir, 'data', 'csv', 'job_data.csv')
     csv_path = os.path.abspath(csv_path)
     df = pd.read_csv(csv_path).fillna("")
 
