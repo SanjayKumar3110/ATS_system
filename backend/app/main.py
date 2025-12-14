@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# Phase-1 ATS routes
+# ATS routes
 from app.routes import ats
 
 app = FastAPI(

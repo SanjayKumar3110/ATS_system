@@ -1,9 +1,5 @@
 # app/services/nlp_matcher.py
 
-""" It is a nlpmatcher and it is resuable script 
-    This script is used in resume_cleaner and jd_cleaner
-    It uses dataset file clean_job_data.csv"""
-
 import os
 import pandas as pd
 import spacy
@@ -12,7 +8,7 @@ from rapidfuzz import process, fuzz
 # Load spaCy NLP model
 nlp = spacy.load("en_core_web_sm")
 
-# ---- 1. Load CSV & Build Lookup Sets ---- #
+# ---- Load CSV & Build Lookup Sets ---- #
 
 def load_skill_sets_from_csv(csv_path: str):
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -38,7 +34,7 @@ def load_skill_sets_from_csv(csv_path: str):
 
     return skill_sets
 
-# ---- 2. NLP Normalization ---- #
+# ---- NLP Normalization ---- #
 
 def extract_keywords(text):
     doc = nlp(text.lower())
@@ -48,7 +44,7 @@ def extract_keywords(text):
     ]
     return list(set(tokens))
 
-# ---- 3. Fuzzy Matching ---- #
+# ---- Fuzzy Matching ---- #
 
 def fuzzy_match_keywords(tokens, dataset, threshold=85):
     matches = set()
@@ -58,7 +54,7 @@ def fuzzy_match_keywords(tokens, dataset, threshold=85):
             matches.add(match)
     return matches
 
-# ---- 4. Main Matcher ---- #
+# ---- Main Matcher ---- #
 
 class NLPMatcher:
     def __init__(self, csv_path: str):

@@ -17,7 +17,6 @@ async def analyze_resume_endpoint(
     pasted_text: str = Form(None)
 ):
     # Step 1: Read and parse resume
-
     try:
         file_bytes = await file.read()
         parsed_resume = parse_resume(file.filename, file_bytes)
@@ -28,7 +27,6 @@ async def analyze_resume_endpoint(
     except Exception as e:
         raise HTTPException(status_code=400, detail =f"Error reading resume: {str(e)}")
 
-    # Step 2: Get raw job description
     # Step 2: Get raw job description
     if job_url and (job_url.startswith("http://") or job_url.startswith("https://")):
         raw_jd = scrape_job_description(job_url)
@@ -43,12 +41,8 @@ async def analyze_resume_endpoint(
     # Step 3: Clean job description
     jd_data = clean_and_extract_jd(raw_jd)
     jd_text_for_ai = jd_data.get("description", raw_jd) if isinstance(jd_data, dict) else str(jd_data)
-
     result = clean_and_score_resume(parsed_resume["text"], jd_data)
-
-    # OPTION A: If ats_scanner.py was modified to accept TEXT (recommended refactor below)
     ai_review = analyze_resume(resume_text, jd_text_for_ai, "review")
-    # ai_match = analyze_resume(resume_text, jd_text_for_ai, "match")
 
     return {
         "job_description": jd_data,
@@ -57,6 +51,5 @@ async def analyze_resume_endpoint(
         "detected_title": parsed_resume["detected_title"],
         "ai_analysis": {
             "detailed_review": ai_review
-            # "matched_details": ai_match
-        },
+        }
     }

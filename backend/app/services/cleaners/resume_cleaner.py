@@ -1,9 +1,5 @@
 # app/services/resume_cleaner.py
 
-""" This script is resume cleaner it is used to extract matched skills and list out missing skills from resume
-    It also used to view final score of resume up compare it with job description
-    This script uses nlpmatcher script for resume cleaning process"""
-
 import re
 from app.services.nlp_matcher import NLPMatcher
 
@@ -15,10 +11,10 @@ matcher = NLPMatcher(DATASET_FILENAME)
 def clean_and_score_resume(resume_text: str, jd_data: dict):
     resume_text = re.sub(r"\s+", " ", resume_text.lower())
 
-    # Step 1: Extract structured skills using NLP matcher
+    # Extract structured skills using NLP matcher
     matched_resume = matcher.match_text(resume_text)
 
-    # Step 2: Compare with job description
+    # Compare with job description
     matched = {
         "it_skills": [s for s in jd_data.get("skills", []) if s in matched_resume["it_skills"]],
         "soft_skills": [s for s in jd_data.get("soft_skills", []) if s in matched_resume["soft_skills"]],
@@ -33,7 +29,7 @@ def clean_and_score_resume(resume_text: str, jd_data: dict):
         "experience": [x for x in jd_data.get("experience_required", []) if x not in matched["experience"]]
     }
 
-    # Step 3: Calculate match score
+    # Calculate match score
     def calc_score(matched_list, total_list):
         if not total_list:
             return 100.0

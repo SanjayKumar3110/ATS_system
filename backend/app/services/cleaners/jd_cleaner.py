@@ -3,13 +3,11 @@
 import re
 from app.services.nlp_matcher import NLPMatcher
 
-# Path to your cleaned dataset
-
 DATASET_FILENAME = "clean_job_data.csv"
 matcher = NLPMatcher(DATASET_FILENAME)
 
 def clean_and_extract_jd(text: str):
-    # Step 1: Remove LinkedIn/Indeed noise
+    # Remove LinkedIn/Indeed noise
     trash_patterns = [
         r"Referrals increase.*?",
         r"Get notified about.*?",
@@ -23,10 +21,10 @@ def clean_and_extract_jd(text: str):
     for pattern in trash_patterns:
         text = re.sub(pattern, "", text, flags=re.IGNORECASE)
 
-    # Step 2: Normalize whitespace and lowercase
+    # Normalize whitespace and lowercase
     text = re.sub(r"\s+", " ", text).lower()
 
-    # Step 3: Extract key sections (e.g., Responsibilities, Skills)
+    # Extract key sections (e.g., Responsibilities, Skills)
     section_matches = re.findall(
         r"(responsibilities|skills|requirements|qualifications|key responsibilities)[\s:]*([\s\S]{0,400})",
         text,
@@ -41,7 +39,7 @@ def clean_and_extract_jd(text: str):
             sections.append(f"{title.capitalize()}:\n{cleaned}")
             combined_text += " " + cleaned
 
-    # Step 4: Use NLP matcher to extract structured data
+    # Use NLP matcher to extract structured data
     matched = matcher.match_text(combined_text)
 
     return {

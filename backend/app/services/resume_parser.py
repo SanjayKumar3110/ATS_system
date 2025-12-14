@@ -1,7 +1,3 @@
-""" this file is resume_parser.py it is used to extract data from resume.
-    It supports resume format of pdf, jpeg, jpg, png, docx, txt.
-    This script is used to extract matching skills from resume"""
-
 import fitz
 import re
 import pytesseract

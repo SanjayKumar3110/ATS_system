@@ -10,7 +10,6 @@ backend_dir = os.path.dirname(os.path.dirname(current_dir))
 env_path = os.path.join(backend_dir, ".env")
 load_dotenv(env_path)
 
-# Configure the API key once when the module is imported
 api_key = os.getenv("GENAI_API")
 if not api_key:
     raise ValueError("API Key not found. Please check your .env file.")
@@ -32,7 +31,6 @@ def extract_text_from_pdf(pdf_path):
         return None
 
 def analyze_resume(resume_input, job_description, analysis_type="review"): 
-    # Define Prompts
     prompts = {
         "review": """
             You are an experienced Technical Human Resource Manager. 
@@ -48,17 +46,14 @@ def analyze_resume(resume_input, job_description, analysis_type="review"):
     }
 
     resume_text = ""
-    # Check if input is a file path (and short enough to be a path)
+    # Check if input is a file path
     if isinstance(resume_input, str) and len(resume_input) < 256 and os.path.isfile(resume_input):
         resume_text = extract_text_from_pdf(resume_input)
     else:
-        # Assume it's already raw text passed from FastAPI
         resume_text = resume_input
 
     if not resume_text:
         return "Error: Could not process resume text."
-
-    # 2. Call Gemini
     try:
         model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content([prompts[analysis_type], resume_text, job_description])
