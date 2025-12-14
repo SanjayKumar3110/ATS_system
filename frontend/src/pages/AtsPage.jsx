@@ -12,6 +12,42 @@ export default function AtsPage() {
   const totalScore = result?.resume_analysis?.total_score ?? 0;
   const suggestUpgrader = totalScore < 60;
 
+  // Helper to format AI response (Markdown-style bold to HTML)
+  const formatAIResponse = (text) => {
+    if (!text) return null;
+    return text.split('\n').map((line, index) => {
+      const trimmedLine = line.trim();
+      if (!trimmedLine) return <div key={index} className="h-2" />;
+
+      // Check for standalone heading (e.g., "**Heading**" or "**Heading:**")
+      const headingMatch = trimmedLine.match(/^\*\*(.*?)\*\*[:]?$/);
+      if (headingMatch) {
+        return (
+          <h3 key={index} className="text-lg font-bold text-gray-900 mt-5 mb-2">
+            {headingMatch[1]}
+          </h3>
+        );
+      }
+
+      // Parse inline bold text
+      const parts = line.split(/(\*\*.*?\*\*)/g);
+      return (
+        <p key={index} className="mb-2 text-gray-700 leading-relaxed">
+          {parts.map((part, i) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return (
+                <strong key={i} className="font-bold text-gray-900">
+                  {part.slice(2, -2)}
+                </strong>
+              );
+            }
+            return part;
+          })}
+        </p>
+      );
+    });
+  };
+
   return (
     <div className="min-h-screen p-6 bg-gray-50 text-gray-900 space-y-10 font-sans">
       <h1 className="text-4xl font-extrabold text-center mb-6 text-gray-800 tracking-tight">
@@ -150,6 +186,18 @@ export default function AtsPage() {
               <ResultsDisplay result={result} />
             </div>
           </div>
+
+          {/* SUMMARY SECTION */}
+          {result.ai_analysis && result.ai_analysis.detailed_review && (
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+              <h3 className="text-gray-800 text-2xl font-bold mb-6 border-b pb-2 border-gray-100">
+                Detail Summary
+              </h3>
+              <div className="prose max-w-none">
+                {formatAIResponse(result.ai_analysis.detailed_review)}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

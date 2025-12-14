@@ -1,24 +1,32 @@
 # app/routes/ats.py
 
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from app.services.resume_parser import parse_resume
 from app.services.scraper import scrape_job_description
 from app.services.cleaners.jd_cleaner import clean_and_extract_jd
 from app.services.cleaners.resume_cleaner import clean_and_score_resume
-from app.services.resume_parser import parse_resume
+from app.services.summary import analyze_resume
 
 router = APIRouter()
 
 
 @router.post("/analyze")
-async def analyze_resume(
+async def analyze_resume_endpoint(
     file: UploadFile = File(...),
     job_url: str = Form(None),
     pasted_text: str = Form(None)
 ):
     # Step 1: Read and parse resume
-    content = await file.read()
-    parsed_resume = parse_resume(file.filename, content)
+
+    try:
+        file_bytes = await file.read()
+        parsed_resume = parse_resume(file.filename, file_bytes)
+        resume_text = parsed_resume.get("text", "")
+
+        await file.seek(0)
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail =f"Error reading resume: {str(e)}")
 
     # Step 2: Get raw job description
     # Step 2: Get raw job description
@@ -34,13 +42,21 @@ async def analyze_resume(
 
     # Step 3: Clean job description
     jd_data = clean_and_extract_jd(raw_jd)
-
-    results = parse_resume(file.filename, content)
+    jd_text_for_ai = jd_data.get("description", raw_jd) if isinstance(jd_data, dict) else str(jd_data)
 
     result = clean_and_score_resume(parsed_resume["text"], jd_data)
+
+    # OPTION A: If ats_scanner.py was modified to accept TEXT (recommended refactor below)
+    ai_review = analyze_resume(resume_text, jd_text_for_ai, "review")
+    # ai_match = analyze_resume(resume_text, jd_text_for_ai, "match")
+
     return {
         "job_description": jd_data,
         "resume_analysis": result,
-        "resume_text": results["text"][:3000],
-        "detected_title": results["detected_title"]
+        "resume_text": parsed_resume["text"][:3000],
+        "detected_title": parsed_resume["detected_title"],
+        "ai_analysis": {
+            "detailed_review": ai_review
+            # "matched_details": ai_match
+        },
     }
