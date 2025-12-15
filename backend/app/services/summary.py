@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 # Load environment variables
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-backend_dir = os.path.dirname(os.path.dirname(current_dir))
-env_path = os.path.join(backend_dir, ".env")
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+env_path = os.path.join(root_dir, ".env")
 load_dotenv(env_path)
 
 api_key = os.getenv("GENAI_API")
