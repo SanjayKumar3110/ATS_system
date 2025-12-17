@@ -12,37 +12,68 @@ export default function AtsPage() {
   const totalScore = result?.resume_analysis?.total_score ?? 0;
   const suggestUpgrader = totalScore < 60;
 
-  // Helper to format AI response (Markdown-style bold to HTML)
+  // Helper to format AI response
   const formatAIResponse = (text) => {
     if (!text) return null;
-    return text.split('\n').map((line, index) => {
-      const trimmedLine = line.trim();
-      if (!trimmedLine) return <div key={index} className="h-2" />;
 
-      // Check for standalone heading (e.g., "**Heading**" or "**Heading:**")
-      const headingMatch = trimmedLine.match(/^\*\*(.*?)\*\*[:]?$/);
-      if (headingMatch) {
+    // Remove "Detail Summary" if it appears at the start
+    const cleanText = text.replace(/^Detail Summary\s*/i, "").trim();
+
+    return cleanText.split('\n').map((line, index) => {
+      let trimmedLine = line.trim();
+      if (!trimmedLine) return <div key={index} className="h-3" />;
+
+      // 1. Handle Headings (### or **Heading**)
+      if (trimmedLine.startsWith("###") || (trimmedLine.startsWith("**") && trimmedLine.endsWith("**")) || trimmedLine.match(/^\d+\.\s+\*\*/)) {
+        const headingText = trimmedLine.replace(/###|[*]/g, "").replace(/^\d+\.\s+/, "").replace(/:$/, "").trim();
         return (
-          <h3 key={index} className="text-lg font-bold text-gray-900 mt-5 mb-2">
-            {headingMatch[1]}
+          <h3 key={index} className="text-xl font-bold text-gray-800 mt-6 mb-3 border-b-2 border-blue-100 pb-1 inline-block">
+            {headingText}
           </h3>
         );
       }
 
-      // Parse inline bold text
-      const parts = line.split(/(\*\*.*?\*\*)/g);
+      // 2. Handle Bullet Points (* or -)
+      if (trimmedLine.startsWith("* ") || trimmedLine.startsWith("- ")) {
+        const content = trimmedLine.replace(/^[*|-]\s+/, "").replace(/\*\*/g, "").trim();
+        // Check if it has a bold prefix (e.g., * **Strength:** description)
+        const splitPoint = content.indexOf(":");
+        if (splitPoint > -1) {
+          const title = content.substring(0, splitPoint + 1);
+          const desc = content.substring(splitPoint + 1);
+          return (
+            <div key={index} className="flex items-start gap-2 mb-2 ml-4">
+              <span className="text-black-500 mt-1.5">•</span>
+              <p className="text-gray-700 leading-relaxed">
+                <span className="font-bold text-gray-900">{title}</span>{desc}
+              </p>
+            </div>
+          );
+        }
+        return (
+          <div key={index} className="flex items-start gap-2 mb-2 ml-4">
+            <span className="text-black-500 mt-1.5">•</span>
+            <p className="text-gray-700 leading-relaxed">{content}</p>
+          </div>
+        );
+      }
+
+      // 3. Handle Numbered Lists (1. )
+      if (trimmedLine.match(/^\d+\.\s/)) {
+        const content = trimmedLine.replace(/^\d+\.\s+/, "").replace(/\*\*/g, "").trim();
+        return (
+          <div key={index} className="flex items-start gap-2 mb-2 ml-4">
+            <span className="text-blue-500 font-bold text-sm mt-1">➤</span>
+            <p className="text-gray-700 leading-relaxed">{content}</p>
+          </div>
+        );
+      }
+
+      // 4. Regular Paragraphs (clean up remaining bold markers)
+      const cleanLine = trimmedLine.replace(/\*\*/g, "");
       return (
         <p key={index} className="mb-2 text-gray-700 leading-relaxed">
-          {parts.map((part, i) => {
-            if (part.startsWith('**') && part.endsWith('**')) {
-              return (
-                <strong key={i} className="font-bold text-gray-900">
-                  {part.slice(2, -2)}
-                </strong>
-              );
-            }
-            return part;
-          })}
+          {cleanLine}
         </p>
       );
     });

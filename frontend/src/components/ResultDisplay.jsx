@@ -7,8 +7,6 @@ const ResultsDisplay = ({ result }) => {
       <h3 className="text-blue-600 text-xl font-semibold mb-4">
         Skill Breakdown
       </h3>
-
-      {/* ─────── LISTS ───────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Skills Required */}
         <div>
@@ -28,11 +26,6 @@ const ResultsDisplay = ({ result }) => {
             <h4 className="text-green-600 font-semibold mb-1">
               Matched Skills
             </h4>
-            <ul className="list-disc list-inside text-sm max-h-24 overflow-y-auto pr-2">
-              {resume_analysis.matched.it_skills.map((skill, i) => (
-                <li key={i}>{skill}</li>
-              ))}
-            </ul>
             <p className="text-sm">
               {resume_analysis.matched.it_skills.join(', ')}
             </p>
