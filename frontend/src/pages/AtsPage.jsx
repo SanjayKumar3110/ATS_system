@@ -156,7 +156,13 @@ export default function AtsPage() {
                     />
                   </PieChart>
 
+                  <div>
+                    <h3 className="text-gray-800 text-2xl font-bold mb-6 border-b pb-2 border-gray-100">
+                      Categorical Scores
+                    </h3>
+                  </div>
                   <div className="mt-6 w-full grid grid-cols-2 gap-4 text-sm">
+
                     <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                       <span className="flex items-center gap-2 font-medium text-gray-700">
                         <span className="w-3 h-3 rounded-full bg-[#00C49F]"></span> IT Skills
