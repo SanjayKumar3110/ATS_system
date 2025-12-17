@@ -2,6 +2,8 @@
 
 A powerful, full-stack Applicant Tracking System (ATS) that leverages **Generative AI (Google Gemini)** and **Natural Language Processing (NLP)** to analyze resumes against job descriptions. It provides detailed match scores, skill breakdowns, and AI-driven professional summaries to help candidates optimize their profiles.
 
+###  [Live Demo](https://ats-system-three.vercel.app/)
+
 ##  Features
 
 -   **Resume Parsing**: Supports PDF, DOCX, TXT, and Image formats (JPG/PNG) using OCR.
@@ -118,7 +120,9 @@ npm start
 ```
 
 The application will open at `http://localhost:3000`.
-To check out this application visit [ATS System](https://ats-system-three.vercel.app).
+
+##  Live Deployment
+Check out the live version of the application here: **[ATS System Live Demo](https://ats-system-three.vercel.app)**
 
 ##  Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
